@@ -5,6 +5,7 @@
 #include <SDL.h>
 #include <Surface\Rectangle.h>
 #include <LvlLoad\LvlLoader.h>
+#include <Types\ColorDefinitions.h>
  
 class Application
 {
@@ -14,6 +15,7 @@ private:
 
     SDL_Surface * screen;
     vector<SurfaceRectangle> surfaces;
+	ColorDefinitions colorDefinitions;
 
     int x;
 

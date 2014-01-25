@@ -33,7 +33,7 @@ bool Application::OnInit()
 	for(int i = 0; i < shapes.size(); ++i)
 	{
 		SurfaceRectangle rec(screen, shapes[i].x, shapes[i].y, shapes[i].width, shapes[i].height);
-		rec.setColor(255,0,0);
+		rec.setColor(colorDefinitions.map[shapes[i].color].r, colorDefinitions.map[shapes[i].color].g, colorDefinitions.map[shapes[i].color].b);
 		surfaces.push_back(rec);
 	}
 
@@ -82,10 +82,7 @@ void Application::OnEvent(SDL_Event * event)
  */ 
 void Application::OnLoop()
 { 
-	for(int i = 0; i < surfaces.size(); ++i)
-	{
-		surfaces[i].draw();
-	}
+
 }
 
 /**
@@ -93,6 +90,11 @@ void Application::OnLoop()
  */
 void Application::OnRender()
 {
+	for(int i = 0; i < surfaces.size(); ++i)
+	{
+		surfaces[i].draw();
+	}
+
     SDL_Flip(screen);
 }
 
