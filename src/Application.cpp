@@ -31,7 +31,7 @@ bool Application::OnInit()
 #ifdef __WIN32__
 	vector<BasicShape> shapes = lvlLoader->Load("..\\levels\\spectrumtest.spe");
 #else
-	vector<BasicShape> shapes = lvlLoader->Load("../levels/spectrumtest.spe");
+	vector<BasicShape> shapes = lvlLoader->Load("./levels/spectrumtest.spe");
 #endif
 
 	for(int i = 0; i < shapes.size(); ++i)

@@ -26,7 +26,10 @@ void Surface::draw()
 		this->color.blue
 	    );
 
-    // Change the alpha on the objects
+    // Hide the object
+    //
+    // Its stupid but, it is the only way I could get it working
+    // Is to turn the object black
     if (hidden)
     {
 	color = SDL_MapRGB(

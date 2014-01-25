@@ -1,8 +1,8 @@
-#include "LvlLoader.h"
+#include "LvlLoad/LvlLoader.h"
 
 vector<BasicShape> LvlLoader::Load(string filename)
 {
-	ifstream f(filename);
+	ifstream f(filename.c_str());
 
 	char s[255];
 	int h, w;

@@ -3,9 +3,9 @@
  
 #include <iostream>
 #include <SDL.h>
-#include <Surface\Rectangle.h>
-#include <LvlLoad\LvlLoader.h>
-#include <Types\ColorDefinitions.h>
+#include "Surface/Rectangle.h"
+#include "LvlLoad/LvlLoader.h"
+#include "Types/ColorDefinitions.h"
  
 class Application
 {

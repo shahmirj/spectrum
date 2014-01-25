@@ -14,16 +14,15 @@ Class for loading a level from a file.
 class LvlLoader
 {
 public:
-	
 
-	/* Gets a vector of basic shapes. */
-	vector<BasicShape> Load(string filename);
+    /* Gets a vector of basic shapes. */
+    vector<BasicShape> Load(const string filename);
 
-	/* Gets a vector of basic shapes. */
-	vector<BasicShape> MatrixToShapes(char a[][512], int h, int w);
+    /* Gets a vector of basic shapes. */
+    vector<BasicShape> MatrixToShapes(char a[][512], int h, int w);
 
-	/* Creates a shape using the info in the matrix a and zeroes it in a. */
-	BasicShape& ExtractShape(char a[][512], int ah, int aw, int y, int x);
+    /* Creates a shape using the info in the matrix a and zeroes it in a. */
+    BasicShape& ExtractShape(char a[][512], int ah, int aw, int y, int x);
 };
 
 #endif

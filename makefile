@@ -1,6 +1,8 @@
 
 
-OBJECTS=$(addprefix src/, Application.o Surface.o Surface/Rectangle.o)
+OBJECTS=$(addprefix src/, Application.o Surface.o Surface/Rectangle.o \
+	LvlLoad/LvlLoader.o BasicShape.o \
+)
 
 CC=g++
 CFLAGS=-Isrc -I/usr/include/SDL
