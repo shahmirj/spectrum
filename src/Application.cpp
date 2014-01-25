@@ -67,5 +67,6 @@ void Application::OnRender()
 
 void Application::OnCleanup()
 {
+    SDL_FreeSurface(display);
     SDL_Quit();
 }
