@@ -28,6 +28,7 @@ public:
     void OnEvent(SDL_Event* Event);
     void OnLoop();
     void OnRender();
+	void OnKeyEvent(SDL_KeyboardEvent * const key);
 };
  
 #endif

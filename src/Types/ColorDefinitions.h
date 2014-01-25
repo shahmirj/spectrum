@@ -14,7 +14,7 @@ public:
 	public:
 		int r, g, b;
 
-		MyColor() { }
+		MyColor() { r = g = b = 0; }
 
 		MyColor(int r, int g, int b)
 		{

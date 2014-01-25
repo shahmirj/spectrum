@@ -28,7 +28,11 @@ bool Application::OnInit()
         return false;
 
 	LvlLoader *lvlLoader = new LvlLoader();
-	vector<BasicShape> shapes = lvlLoader->Load("C:\\Users\\Iulia\\Documents\\GitHub\\spectrum\\levels\\spectrumtest.spe");
+#ifdef __WIN32__
+	vector<BasicShape> shapes = lvlLoader->Load("..\\levels\\spectrumtest.spe");
+#else
+	vector<BasicShape> shapes = lvlLoader->Load("../levels/spectrumtest.spe");
+#endif
 
 	for(int i = 0; i < shapes.size(); ++i)
 	{
@@ -71,8 +75,17 @@ int Application::run()
  */
 void Application::OnEvent(SDL_Event * event) 
 {
-    if(event->type == SDL_QUIT)
-        running = false;
+	switch (event->type)                         
+    {                                            
+        case SDL_QUIT:                           
+            running = false;                     
+            break;                               
+        case SDL_KEYUP:                          
+            OnKeyEvent(&event->key);             
+            break;                               
+        default:                                 
+            break;                               
+    }  
 }
 
 /**
@@ -98,6 +111,27 @@ void Application::OnRender()
     SDL_Flip(screen);
 }
 
+void Application::OnKeyEvent(SDL_KeyboardEvent * const key) 
+{                                                           
+    if (key->type == SDL_KEYUP)                             
+    {                                                       
+        if (key->keysym.sym == SDLK_1)                      
+        {                                                   
+            surfaces[0].hide();                               
+            surfaces[1].show();                               
+        }                                                   
+        else if(key->keysym.sym == SDLK_2)                  
+        {                                                   
+            surfaces[0].show();                               
+            surfaces[1].hide();                               
+        }                                                   
+    }                                                       
+    else if (key->type == SDL_KEYDOWN)                      
+    {                                                       
+                                                            
+    }                                                       
+}
+
 /**
  * Clean up our variables
  */
@@ -106,3 +140,5 @@ Application::~Application()
     SDL_FreeSurface(screen);
     SDL_Quit();
 }
+
+
