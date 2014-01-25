@@ -3,7 +3,7 @@
  
 #include <iostream>
 #include <SDL/SDL.h>
-#include "Surface.h"
+#include "Surface/Rectangle.h"
  
 class Application
 {
@@ -11,21 +11,21 @@ class Application
 private:
     bool running;
 
-    SDL_Surface * display;
-    Surface * surface;
+    SDL_Surface * screen;
+    Surface * surface1;
+    Surface * surface2;
+
+    int x;
 
 public:
     Application();
+    ~Application();
 
-    int OnExecute();
-
-public:
-
+    int run();
     bool OnInit();
     void OnEvent(SDL_Event* Event);
     void OnLoop();
     void OnRender();
-    void OnCleanup();
 };
  
 #endif

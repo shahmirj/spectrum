@@ -1,10 +1,15 @@
 #include "Application.h"
     
 Application::Application()
-    : running(true), display(NULL)
+    : running(true), screen(NULL), x(1)
 {
 }
 
+/**
+ * Initialize our Application.
+ *
+ * Really should be in the constructor
+ */
 bool Application::OnInit()
 {
     if(SDL_Init(SDL_INIT_EVERYTHING) < 0) 
@@ -12,22 +17,26 @@ bool Application::OnInit()
  
     SDL_WM_SetCaption("Spectrum", NULL);
 
-    display = SDL_SetVideoMode(
+    screen = SDL_SetVideoMode(
 		    640,
 		    480, 
 		    32, 
-		    SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_ANYFORMAT
+		    SDL_SWSURFACE | SDL_DOUBLEBUF | SDL_ANYFORMAT
 	    );
 
-    if(display == NULL)
+    if(screen == NULL)
         return false;
 
-    surface = new Surface(display);
+    surface1 = new SurfaceRectangle(screen, 10, 10, 100, 10);
+    surface2 = new SurfaceRectangle(screen, 10, 30, 50, 10);
  
     return true;
 }
 
-int Application::OnExecute()
+/**
+ * Start our execute loop
+ */
+int Application::run()
 {
     if(OnInit() == false) 
         return -1;
@@ -44,29 +53,47 @@ int Application::OnExecute()
         OnLoop();
         OnRender();
 
-	SDL_Delay(100);
+	SDL_Delay(25);
     }
 
-    OnCleanup();
     return 0;
 }
 
+/**
+ * Check for events
+ */
 void Application::OnEvent(SDL_Event * event) 
 {
     if(event->type == SDL_QUIT)
         running = false;
 }
 
-void Application::OnLoop(){}
-
-void Application::OnRender()
-{
-    surface->draw(20, 30);
-    SDL_Flip(display);
+/**
+ * Game logic. 
+ *
+ * Simple test to expand the surface
+ */ 
+void Application::OnLoop()
+{ 
+    this->surface1->deltaMoveX(x);
+    this->surface2->deltaMoveY(x);
 }
 
-void Application::OnCleanup()
+/**
+ * Render our App
+ */
+void Application::OnRender()
 {
-    SDL_FreeSurface(display);
+    surface1->draw();
+    surface2->draw();
+    SDL_Flip(screen);
+}
+
+/**
+ * Clean up our variables
+ */
+Application::~Application()
+{
+    SDL_FreeSurface(screen);
     SDL_Quit();
 }

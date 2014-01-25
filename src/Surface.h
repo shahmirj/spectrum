@@ -4,8 +4,6 @@
 #include <SDL/SDL.h>
 #include "Exception.h"
 
-#include <iostream>
-
 /**
  * Simple class to hold our surface values
  */
@@ -14,16 +12,24 @@ class Surface
 
 private:
     SDL_Surface * surface;
-    SDL_Surface * display;
 
 protected:
-   void setDisplay(SDL_Surface * display);
+    SDL_Surface * screen;
+    SDL_Rect rect;
+
+    void setScreen(SDL_Surface * screen);
+    void setRectangle(const SDL_Rect * const rect);
 
 public:
-    Surface(SDL_Surface * display);
-    ~Surface();
+    Surface(SDL_Surface * screen);
+    virtual ~Surface();
 
-    void draw(int x, int y);
+    void deltaMoveX(int x);
+    void deltaMoveY(int y);
+    void deltaStretchWidth(int w);
+    void deltaStretchHeight(int h);
+
+    virtual void draw() = 0;
 };
 
 #endif

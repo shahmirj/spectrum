@@ -1,14 +1,17 @@
 
 
-OBJECTS=$(addprefix src/, Application.o Surface.o)
+OBJECTS=$(addprefix src/, Application.o Surface.o Surface/Rectangle.o)
+
+CC=g++
+CFLAGS=-Isrc
 
 all: color
 
-src/$(OBJECTS): %.o: %.cpp
-	g++ -c $< -o $@
+$(OBJECTS): %.o: %.cpp
+	$(CC) $(CFLAGS) -c $< -o $@
 
 color: $(OBJECTS)
-	g++ src/color.cpp $(OBJECTS) -o $@ -lSDL
+	$(CC) $(CFLAGS) src/color.cpp $(OBJECTS) -o $@ -lSDL
 
 clean:
 	rm -f color
