@@ -5,6 +5,28 @@ Application::Application()
 {
 }
 
+bool Application::OnInit()
+{
+    if(SDL_Init(SDL_INIT_EVERYTHING) < 0) 
+        return false;
+ 
+    SDL_WM_SetCaption("Spectrum", NULL);
+
+    display = SDL_SetVideoMode(
+		    640,
+		    480, 
+		    32, 
+		    SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_ANYFORMAT
+	    );
+
+    if(display == NULL)
+        return false;
+
+    surface = new Surface(display);
+ 
+    return true;
+}
+
 int Application::OnExecute()
 {
     if(OnInit() == false) 
@@ -29,26 +51,6 @@ int Application::OnExecute()
     return 0;
 }
 
-bool Application::OnInit()
-{
-    if(SDL_Init(SDL_INIT_EVERYTHING) < 0) 
-        return false;
- 
-    display = SDL_SetVideoMode(
-		    640,
-		    480, 
-		    32, 
-		    SDL_HWSURFACE | SDL_DOUBLEBUF
-	    );
-
-    if(display == NULL)
-        return false;
-
-    surface = new Surface(display);
- 
-    return true;
-}
-
 void Application::OnEvent(SDL_Event * event) 
 {
     if(event->type == SDL_QUIT)
@@ -60,7 +62,6 @@ void Application::OnLoop(){}
 void Application::OnRender()
 {
     surface->draw(20, 30);
-
     SDL_Flip(display);
 }
 

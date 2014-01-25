@@ -7,6 +7,7 @@ Surface::Surface(SDL_Surface * display)
     : surface(NULL), display(NULL)
 {
     this->setDisplay(display);
+    /*
     surface = SDL_CreateRGBSurface(
 	    0, 
 	    100, 
@@ -24,6 +25,12 @@ Surface::Surface(SDL_Surface * display)
 
     if (surface == NULL)
 	throw Exception("SDL_CreateRGBSurface failed!");
+	*/
+}
+
+Surface::~Surface()
+{
+    SDL_FreeSurface(surface);
 }
 
 /**
@@ -37,7 +44,7 @@ void Surface::draw(int x, int y)
     rect.w = 20;
     rect.w = 30;
 
-    Uint32 blue = SDL_MapRGB(display->format, 0, 0, 255);
+    Uint32 blue = SDL_MapRGB(display->format, 100, 100, 200);
     SDL_FillRect(display, &rect, blue);
 
     SDL_BlitSurface(surface, NULL, display, &rect);

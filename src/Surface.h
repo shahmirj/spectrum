@@ -4,6 +4,8 @@
 #include <SDL/SDL.h>
 #include "Exception.h"
 
+#include <iostream>
+
 /**
  * Simple class to hold our surface values
  */
@@ -19,9 +21,9 @@ protected:
 
 public:
     Surface(SDL_Surface * display);
+    ~Surface();
 
     void draw(int x, int y);
-
 };
 
 #endif
