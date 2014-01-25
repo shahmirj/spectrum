@@ -1,7 +1,7 @@
 #include "Application.h"
     
 Application::Application()
-    : running(true), screen(NULL), x(1)
+    : running(true), screen(NULL)
 {
 }
 
@@ -26,20 +26,41 @@ bool Application::OnInit()
 
     if(screen == NULL)
         return false;
-
-	LvlLoader *lvlLoader = new LvlLoader();
+	
+    LvlLoader *lvlLoader = new LvlLoader();
 #ifdef __WIN32__
-	vector<BasicShape> shapes = lvlLoader->Load("..\\levels\\spectrumtest.spe");
+    vector<BasicShape> shapes = lvlLoader->Load("..\\levels\\spectrumtest.spe");
 #else
-	vector<BasicShape> shapes = lvlLoader->Load("./levels/spectrumtest.spe");
+    vector<BasicShape> shapes = lvlLoader->Load("./levels/spectrumtest.spe");
 #endif
 
-	for(int i = 0; i < shapes.size(); ++i)
-	{
-		SurfaceRectangle rec(screen, shapes[i].x, shapes[i].y, shapes[i].width, shapes[i].height);
-		rec.setColor(colorDefinitions.map[shapes[i].color].r, colorDefinitions.map[shapes[i].color].g, colorDefinitions.map[shapes[i].color].b);
-		surfaces.push_back(rec);
-	}
+    for(int i = 0; i < shapes.size(); ++i)
+    {
+	SurfaceRectangle rec(
+		screen, 
+		shapes[i].x, 
+		shapes[i].y, 
+		shapes[i].width, 
+		shapes[i].height
+	    );
+	rec.setColor(
+		colorDefinitions.map[shapes[i].color].r, 
+		colorDefinitions.map[shapes[i].color].g, 
+		colorDefinitions.map[shapes[i].color].b
+	    );
+	surfaces.push_back(rec);
+    }
+
+    b2AABB * worldSize = new b2AABB();
+    worldSize->lowerBound.Set(-3000 / 30, -3000 / 30);
+    worldSize->upperBound.Set(3000 / 30, 3000 / 30);
+
+    b2Vec2 * gravity = new b2Vec2(0.0f, 3.8f);
+    bool x = false;
+    world = new b2World((*worldSize), *gravity, x);
+
+    b2BodyDef groundBodyDef;
+    groundBodyDef.position.Set(0,0);
 
     return true;
 }
@@ -111,6 +132,9 @@ void Application::OnRender()
     SDL_Flip(screen);
 }
 
+/**
+ * Keyboard events
+ */
 void Application::OnKeyEvent(SDL_KeyboardEvent * const key) 
 {                                                           
     if (key->type == SDL_KEYUP)                             
@@ -137,8 +161,7 @@ void Application::OnKeyEvent(SDL_KeyboardEvent * const key)
  */
 Application::~Application()
 {
+    delete world;
     SDL_FreeSurface(screen);
     SDL_Quit();
 }
-
-

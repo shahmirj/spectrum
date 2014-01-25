@@ -3,6 +3,7 @@
  
 #include <iostream>
 #include <SDL.h>
+#include <Box2D.h>
 #include "Surface/Rectangle.h"
 #include "LvlLoad/LvlLoader.h"
 #include "Types/ColorDefinitions.h"
@@ -14,10 +15,13 @@ private:
     bool running;
 
     SDL_Surface * screen;
+
     vector<SurfaceRectangle> surfaces;
 	ColorDefinitions colorDefinitions;
 
-    int x;
+    Surface * surface1;
+    Surface * surface2;
+    b2World*  world;
 
 public:
     Application();

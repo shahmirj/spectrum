@@ -9,7 +9,6 @@ SurfaceRectangle::SurfaceRectangle(
     )
     : Surface(screen)
 {
-
     SDL_Rect rect = { x, y, w, h };
     Surface::setRectangle(&rect);
 }
