@@ -27,11 +27,20 @@ bool Application::OnInit()
     if(screen == NULL)
         return false;
 
-    surface1 = new SurfaceRectangle(screen, 10, 10, 100, 10);
-    surface1->setColor(255, 0, 0);
-    surface2 = new SurfaceRectangle(screen, 10, 30, 50, 10);
-    surface2->setColor(0, 0, 255);
- 
+	LvlLoader *lvlLoader = new LvlLoader();
+#ifdef __WIN32__
+	vector<BasicShape> shapes = lvlLoader->Load("..\\levels\\spectrumtest.spe");
+#else
+	vector<BasicShape> shapes = lvlLoader->Load("./levels/spectrumtest.spe");
+#endif
+
+	for(int i = 0; i < shapes.size(); ++i)
+	{
+		SurfaceRectangle rec(screen, shapes[i].x, shapes[i].y, shapes[i].width, shapes[i].height);
+		rec.setColor(colorDefinitions.map[shapes[i].color].r, colorDefinitions.map[shapes[i].color].g, colorDefinitions.map[shapes[i].color].b);
+		surfaces.push_back(rec);
+	}
+
     return true;
 }
 
@@ -66,17 +75,17 @@ int Application::run()
  */
 void Application::OnEvent(SDL_Event * event) 
 {
-    switch (event->type)
-    {
-	case SDL_QUIT:
-	    running = false;
-	    break;
-	case SDL_KEYUP:
-	    OnKeyEvent(&event->key);
-	    break;
-	default:
-	    break;
-    }
+	switch (event->type)                         
+    {                                            
+        case SDL_QUIT:                           
+            running = false;                     
+            break;                               
+        case SDL_KEYUP:                          
+            OnKeyEvent(&event->key);             
+            break;                               
+        default:                                 
+            break;                               
+    }  
 }
 
 /**
@@ -86,6 +95,7 @@ void Application::OnEvent(SDL_Event * event)
  */ 
 void Application::OnLoop()
 { 
+
 }
 
 /**
@@ -93,9 +103,33 @@ void Application::OnLoop()
  */
 void Application::OnRender()
 {
-    surface1->draw();
-    surface2->draw();
+	for(int i = 0; i < surfaces.size(); ++i)
+	{
+		surfaces[i].draw();
+	}
+
     SDL_Flip(screen);
+}
+
+void Application::OnKeyEvent(SDL_KeyboardEvent * const key) 
+{                                                           
+    if (key->type == SDL_KEYUP)                             
+    {                                                       
+        if (key->keysym.sym == SDLK_1)                      
+        {                                                   
+            surfaces[0].hide();                               
+            surfaces[1].show();                               
+        }                                                   
+        else if(key->keysym.sym == SDLK_2)                  
+        {                                                   
+            surfaces[0].show();                               
+            surfaces[1].hide();                               
+        }                                                   
+    }                                                       
+    else if (key->type == SDL_KEYDOWN)                      
+    {                                                       
+                                                            
+    }                                                       
 }
 
 /**
@@ -107,26 +141,4 @@ Application::~Application()
     SDL_Quit();
 }
 
-/**
- * Handle key events when key is pressed
- */
-void Application::OnKeyEvent(SDL_KeyboardEvent * const key)
-{
-    if (key->type == SDL_KEYUP)
-    {
-	if (key->keysym.sym == SDLK_0)
-	{
-	    surface1->hide();
-	    surface2->show();
-	}
-	else
-	{
-	    surface1->show();
-	    surface2->hide();
-	}
-    }
-    else if (key->type == SDL_KEYDOWN)
-    {
 
-    }
-}

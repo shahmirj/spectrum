@@ -1,11 +1,12 @@
-#ifndef APPLICATION_H_
-#define APPLICATION_H_
+#ifndef _APPLICATION_H_
+#define _APPLICATION_H_
  
 #include <iostream>
 #include <SDL.h>
 #include "Surface/Rectangle.h"
-#include "Color.h"
-
+#include "LvlLoad/LvlLoader.h"
+#include "Types/ColorDefinitions.h"
+ 
 class Application
 {
 
@@ -13,8 +14,8 @@ private:
     bool running;
 
     SDL_Surface * screen;
-    Surface * surface1;
-    Surface * surface2;
+    vector<SurfaceRectangle> surfaces;
+	ColorDefinitions colorDefinitions;
 
     int x;
 
@@ -27,8 +28,7 @@ public:
     void OnEvent(SDL_Event* Event);
     void OnLoop();
     void OnRender();
-    
-    void OnKeyEvent(SDL_KeyboardEvent * const key);
+	void OnKeyEvent(SDL_KeyboardEvent * const key);
 };
  
 #endif
