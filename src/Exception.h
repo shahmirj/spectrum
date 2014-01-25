@@ -27,7 +27,13 @@ public:
     explicit Exception() : runtime_error("Exception")
     {
         this->ec = errno;
-        this->message = strerror(this->ec);
+#ifdef __WIN32__
+		char buff[256];
+        strerror_s(buff, this->ec);
+		this->message = buff;
+#else
+		this->message = strerror(this->ec);
+#endif
     }
 
     // An exception when only the error code is given
