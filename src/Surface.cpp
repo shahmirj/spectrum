@@ -19,8 +19,25 @@ Surface::~Surface()
  */
 void Surface::draw()
 {
-    if (!hidden)
-	this->doActualDraw();
+    Uint32 color = SDL_MapRGB(
+		screen->format, 
+		this->color.red, 
+		this->color.green, 
+		this->color.blue
+	    );
+
+    // Change the alpha on the objects
+    if (hidden)
+    {
+	color = SDL_MapRGB(
+		screen->format, 
+		0, 
+		0, 
+		0
+	    );
+    }
+
+    this->doActualDraw(color);
 }
 
 /**
@@ -37,38 +54,6 @@ void Surface::hide()
 void Surface::show()
 {
     hidden = false;
-}
-
-/**
- * Move the surface
- */ 
-void Surface::deltaMoveX(int x)
-{
-    this->rect.x += x;
-}
-
-/**
- * Move in the Y coordinate
- */
-void Surface::deltaMoveY(int y)
-{
-    this->rect.y += y;
-}
-
-/**
- * Stretch the surface width
- */
-void Surface::deltaStretchWidth(int w)
-{
-    this->rect.w += w;
-}
-
-/**
- * Stretch the surface height
- */
-void Surface::deltaStretchHeight(int h)
-{
-    this->rect.h += h;
 }
 
 /**
@@ -98,6 +83,7 @@ void Surface::setRectangle(const SDL_Rect * const rect)
  */
 void Surface::setColor(short int r, short int g, short int b)
 {
-    //TODO check valid values
-    this->color = SDL_MapRGB(screen->format, r, g, b);
+    this->color.red = r;
+    this->color.green = g;
+    this->color.blue = b;
 }

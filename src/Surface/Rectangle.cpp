@@ -14,9 +14,9 @@ SurfaceRectangle::SurfaceRectangle(
     Surface::setRectangle(&rect);
 }
 
-void SurfaceRectangle::doActualDraw()
+void SurfaceRectangle::doActualDraw(Uint32 color)
 {
-    SDL_FillRect(screen, &this->rect, this->color);
+    SDL_FillRect(screen, &this->rect, color);
 }
 
 SurfaceRectangle::~SurfaceRectangle()

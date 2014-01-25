@@ -66,8 +66,17 @@ int Application::run()
  */
 void Application::OnEvent(SDL_Event * event) 
 {
-    if(event->type == SDL_QUIT)
-        running = false;
+    switch (event->type)
+    {
+	case SDL_QUIT:
+	    running = false;
+	    break;
+	case SDL_KEYUP:
+	    OnKeyEvent(&event->key);
+	    break;
+	default:
+	    break;
+    }
 }
 
 /**
@@ -77,8 +86,6 @@ void Application::OnEvent(SDL_Event * event)
  */ 
 void Application::OnLoop()
 { 
-    this->surface1->deltaMoveX(x);
-    this->surface2->deltaMoveY(x);
 }
 
 /**
@@ -98,4 +105,28 @@ Application::~Application()
 {
     SDL_FreeSurface(screen);
     SDL_Quit();
+}
+
+/**
+ * Handle key events when key is pressed
+ */
+void Application::OnKeyEvent(SDL_KeyboardEvent * const key)
+{
+    if (key->type == SDL_KEYUP)
+    {
+	if (key->keysym.sym == SDLK_0)
+	{
+	    surface1->hide();
+	    surface2->show();
+	}
+	else
+	{
+	    surface1->show();
+	    surface2->hide();
+	}
+    }
+    else if (key->type == SDL_KEYDOWN)
+    {
+
+    }
 }

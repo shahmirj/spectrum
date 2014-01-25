@@ -1,10 +1,11 @@
-#ifndef _APPLICATION_H_
-#define _APPLICATION_H_
+#ifndef APPLICATION_H_
+#define APPLICATION_H_
  
 #include <iostream>
 #include <SDL.h>
 #include "Surface/Rectangle.h"
- 
+#include "Color.h"
+
 class Application
 {
 
@@ -26,6 +27,8 @@ public:
     void OnEvent(SDL_Event* Event);
     void OnLoop();
     void OnRender();
+    
+    void OnKeyEvent(SDL_KeyboardEvent * const key);
 };
  
 #endif

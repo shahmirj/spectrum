@@ -10,7 +10,7 @@ class SurfaceRectangle : public Surface
 {
 
 private:
-    void doActualDraw();
+    void doActualDraw(Uint32 color);
 
 public:
     SurfaceRectangle(SDL_Surface * screen, int x, int y, int w, int h);
