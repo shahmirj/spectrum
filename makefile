@@ -3,7 +3,7 @@
 OBJECTS=$(addprefix src/, Application.o Surface.o Surface/Rectangle.o)
 
 CC=g++
-CFLAGS=-Isrc
+CFLAGS=-Isrc -I/usr/include/SDL
 
 all: color
 

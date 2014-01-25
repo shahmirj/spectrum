@@ -10,11 +10,12 @@ class SurfaceRectangle : public Surface
 {
 
 private:
+    void doActualDraw();
+
 public:
     SurfaceRectangle(SDL_Surface * screen, int x, int y, int w, int h);
     virtual ~SurfaceRectangle();
 
-    void draw();
 };
 
 #endif

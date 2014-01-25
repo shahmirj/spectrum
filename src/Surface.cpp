@@ -4,7 +4,7 @@
  * Create a surface, object that will draw on display
  */
 Surface::Surface(SDL_Surface * screen)
-    : surface(NULL), screen(NULL)
+    : surface(NULL), screen(NULL), hidden(false) 
 {
     this->setScreen(screen);
 }
@@ -12,6 +12,31 @@ Surface::Surface(SDL_Surface * screen)
 Surface::~Surface()
 {
     SDL_FreeSurface(surface);
+}
+
+/**
+ * Draw the surface, only if hide is true
+ */
+void Surface::draw()
+{
+    if (!hidden)
+	this->doActualDraw();
+}
+
+/**
+ * Hide the surface
+ */
+void Surface::hide()
+{
+    hidden = true;
+}
+
+/**
+ * Show the surface
+ */
+void Surface::show()
+{
+    hidden = false;
 }
 
 /**
@@ -66,4 +91,13 @@ void Surface::setRectangle(const SDL_Rect * const rect)
 	throw Exception("Invalid rect");
 	
     this->rect = *(rect);
+}
+
+/**
+ * Set the color.
+ */
+void Surface::setColor(short int r, short int g, short int b)
+{
+    //TODO check valid values
+    this->color = SDL_MapRGB(screen->format, r, g, b);
 }

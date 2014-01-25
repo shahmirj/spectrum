@@ -28,7 +28,9 @@ bool Application::OnInit()
         return false;
 
     surface1 = new SurfaceRectangle(screen, 10, 10, 100, 10);
+    surface1->setColor(255, 0, 0);
     surface2 = new SurfaceRectangle(screen, 10, 30, 50, 10);
+    surface2->setColor(0, 0, 255);
  
     return true;
 }

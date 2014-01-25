@@ -2,7 +2,7 @@
 #define _APPLICATION_H_
  
 #include <iostream>
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include "Surface/Rectangle.h"
  
 class Application
