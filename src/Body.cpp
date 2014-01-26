@@ -56,8 +56,7 @@ void Body::draw()
 	shape.GetVertex(3)
     };
 
-    //glColor4ub(color.red,color.green,color.blue,color.alpha);
-    glColor4ub(255,255,255,255);
+    glColor4ub(color.red,color.green,color.blue,color.alpha);
     glPushMatrix();
     glTranslatef(center.x*M2P,center.y*M2P,0);
     glRotatef(angle*180.0/3.14,0,0,1);
@@ -80,6 +79,14 @@ void Body::setVelocity(const b2Vec2 vector)
 b2Vec2 Body::getVelocity() const
 {
     return this->body->GetLinearVelocity();
+}
+
+void Body::setColor(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha)
+{
+    color.red=red;
+    color.green=green;
+    color.blue=blue;
+    color.alpha=alpha;
 }
 
 Body::~Body()

@@ -27,15 +27,22 @@ private:
     static const int32 velocityIterations;
     static const int32 positionIterations;
 
+    // While the app is running
     bool running;
 
-    SDL_Surface * screen;
-
-    Body * character;
-    std::vector<Body *> bodies;
-
+    // Our box2D world
     b2World * world;
 
+    // The screen handler
+    SDL_Surface * screen;
+
+    // The character body
+    Body * character;
+
+    // All bodies, so the can be used to draw consecutively
+    std::vector<Body *> bodies;
+
+    // Initialize function
     void initScreen();
     void initOpenGL();
     void initBox2D();
@@ -50,7 +57,7 @@ public:
     void OnEvent(SDL_Event* Event);
     void OnLoop();
     void OnRender();
-	void OnKeyEvent(SDL_KeyboardEvent * const key);
+    void OnKeyEvent(SDL_KeyboardEvent * const key);
 };
  
 #endif

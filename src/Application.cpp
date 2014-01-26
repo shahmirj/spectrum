@@ -1,6 +1,6 @@
 #include "Application.h"
-    
 
+// See header for details
 const float32 Application::timeStep = 1.0f / 30.0f;
 const int32 Application::velocityIterations = 6;
 const int32 Application::positionIterations = 2;
@@ -73,14 +73,15 @@ void Application::initBodies()
 {
     Body * body;
 
-    character = new Body(world, 50, 10, 5, 5, true);
+    character = new Body(world, 50, 10, 10, 10, true);
     bodies.push_back(character);
 
     body = new Body(world, 50, 30, 100, 20, false);
-    //body->setColor(255, 0, 255);
+    body->setColor(255, 0, 0);
     bodies.push_back(body);
 
     body = new Body(world, 150, 200, 100, 20, false);
+    body->setColor(255, 0, 0);
     bodies.push_back(body);
 
 }
