@@ -20,6 +20,6 @@ Inside the root folder run:
 ### Installing Windows
 Known to work on windows in its early stages, You will need OpenGL, Box2D 2.13 and SDL with a bit of luck.
 
-## Credits
+### Credits
 Iulia Comsa - Cheif designer, head honcho and Math nut.
 Shahmir Javaid - Software Hostage
