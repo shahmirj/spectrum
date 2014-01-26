@@ -219,6 +219,11 @@ void Application::OnEvent(SDL_Event * event)
                     blueBodies[x]->hide();
                     blueBodies[x]->setColor(0,0,255);
                 }
+            
+                // Stop the character accelerating from reload
+                b2Vec2 vel;
+                vel.x = 0;
+                character->setVelocity( vel );
 
                 currentColor = Red;
                 gameHasEnded = false;
