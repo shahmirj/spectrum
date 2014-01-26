@@ -120,20 +120,44 @@ void Application::initBodies()
     redBodies.push_back(body);
  
     // 5 Red   
-    body = new Body(world, 400, 310, 200, 10, 0.5, false);
+    body = new Body(world, 300, 410, 400, 10, 0.5, false);
     body->setColor(255, 0, 0);
     body->setAngle(2.0);
     bodies.push_back(body);
     redBodies.push_back(body);
     
-    // 6 Red
-    body = new Body(world, 520, 400, 120, 10, 0.5, false);
+    // 6 Blue
+    body = new Body(world, 470, 450, 200, 10, 0.5, false);
     body->setColor(0, 0, 255);
     body->setAngle(2.0);
+    body->hide();
+    bodies.push_back(body);
+    blueBodies.push_back(body);
+ 
+    // 7 Blue
+    body = new Body(world, 442, 100, 280, 10, 0.5, false);
+    body->setColor(0, 0, 255);
+    body->setAngle(2.0);
+    body->hide();
     bodies.push_back(body);
     blueBodies.push_back(body);
     
-    goal = new Body(world, 610, 455, 30, 30, 0.5, false);
+    // 8 Red
+    body = new Body(world, 586, 200, 350, 10, 0.5, false);
+    body->setColor(255, 0, 0);
+    body->setAngle(2.0);
+    bodies.push_back(body);
+    redBodies.push_back(body);
+
+    body = new Body(world, 641, 0, 1000, 1, 0, false);
+    body->setColor(255, 255, 255);
+    body->setAngle(1.5707);
+    bodies.push_back(body);
+    body = new Body(world, 0, 481, 1300, 1, 0, false);
+    body->setColor(255, 255, 255);
+    bodies.push_back(body);
+    
+    goal = new Body(world, 590, 435, 30, 30, 0.5, false);
     //goal = new Body(world, 100, 100, 30, 30, 0.5, false);
     goal->setAngleVelocity(1.5);
     bodies.push_back(goal);
@@ -248,6 +272,21 @@ void Application::OnRender()
 {
     glClear(GL_COLOR_BUFFER_BIT);
     glLoadIdentity();
+    
+    // TODO ALLOW RESET
+    if (gameHasEnded)
+    {
+        for (size_t x = 0; x < bodies.size(); x++)
+        {
+            Color c = bodies[x]->getColor();
+            if (c.red > 10) bodies[x]->setColor(c.red-10, c.green, c.blue);
+            if (c.green > 10) bodies[x]->setColor(c.red, c.green-10, c.blue);
+            if (c.blue > 10) bodies[x]->setColor(c.red, c.green, c.blue-10);
+        }
+    }
+    
+    for (size_t x = 0; x < bodies.size(); x++)
+        bodies[x]->draw();
 
     glColor4ub(255,255,255,255);
     glPushMatrix();
@@ -270,21 +309,6 @@ void Application::OnRender()
             (const unsigned char *)"Got lost? Press <R>."
         );
     glPopMatrix();
-
-    // TODO ALLOW RESET
-    if (gameHasEnded)
-    {
-        for (size_t x = 0; x < bodies.size(); x++)
-        {
-            Color c = bodies[x]->getColor();
-            if (c.red > 10) bodies[x]->setColor(c.red-10, c.green, c.blue);
-            if (c.green > 10) bodies[x]->setColor(c.red, c.green-10, c.blue);
-            if (c.blue > 10) bodies[x]->setColor(c.red, c.green, c.blue-10);
-        }
-    }
-    
-    for (size_t x = 0; x < bodies.size(); x++)
-        bodies[x]->draw();
 
     SDL_GL_SwapBuffers( );
 }
