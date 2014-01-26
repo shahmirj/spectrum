@@ -1,6 +1,8 @@
 #ifndef COLOR_H_
 #define COLOR_H_
 
+#include <SDL.h>
+
 class Color
 {
 public:
@@ -9,7 +11,7 @@ public:
     Uint8 green;
     Uint8 alpha;
 
-    Color() : red(0), blue(0), green(0), alpha(0) {}
+    Color() : red(255), blue(255), green(255), alpha(255) {}
 };
 
 #endif
