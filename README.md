@@ -25,5 +25,5 @@ Inside the root folder run:
 Known to work on windows in its early stages. You will need OpenGL and GLUT, Box2D 2.13 and SDL 1.2 with a bit of luck.
 
 ### Credits
-Iulia Comsa - Cheif designer, head honcho and Math nut.
-Shahmir Javaid - Software Hostage
+ - Iulia Comsa - Cheif designer, head honcho and Math nut.
+ - Shahmir Javaid - Software Hostage
