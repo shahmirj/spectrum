@@ -83,9 +83,33 @@ void Body::setVelocity(const b2Vec2 vector)
     this->body->SetLinearVelocity(vector);
 }
 
+void Body::setAngleVelocity(float angleVelocity)
+{
+   this->body->SetAngularVelocity(angleVelocity);
+}
+
 b2Vec2 Body::getVelocity() const
 {
     return this->body->GetLinearVelocity();
+}
+
+void Body::moveTo(int x, int y)
+{
+    this->body->SetTransform(b2Vec2(x*P2M, y*P2M), 0);
+}
+
+b2Vec2 Body::getPosition() const
+{
+    b2Vec2 temp = this->body->GetPosition();
+    temp.x = temp.x * M2P;
+    temp.y = temp.y * M2P;
+
+    return temp;
+}
+
+void Body::setAngle(float angle)
+{
+    this->body->SetTransform(body->GetPosition(), angle);
 }
 
 void Body::hide()
@@ -106,6 +130,11 @@ void Body::setColor(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha)
     color.green=green;
     color.blue=blue;
     color.alpha=alpha;
+}
+
+Color Body::getColor() const
+{
+    return this->color;    
 }
 
 Body::~Body()

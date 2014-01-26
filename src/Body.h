@@ -29,15 +29,16 @@ private:
     // Is the body hidden
     bool hidden;
 
+    static const float P2M;
+    static const float M2P;
+
+public:
+
     int x;
     int y;
     int w;
     int h;
 
-    static const float P2M;
-    static const float M2P;
-
-public:
     Body(
 	    b2World * world,
 	    int x, 
@@ -51,13 +52,21 @@ public:
 
     void setFriction(const float friction);
 
+    b2Vec2 getPosition() const;
+
     void setVelocity(const b2Vec2 vector);
     b2Vec2 getVelocity() const;
+
+    void setAngleVelocity(float angle);
+
+    void moveTo(int x, int y);
+    void setAngle(float angle);
 
     void hide();
     void show();
 
     void setColor(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha = 255);
+    Color getColor() const;
 
     virtual void draw();
 };

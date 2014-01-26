@@ -6,6 +6,7 @@
 #include <SDL.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <GL/freeglut.h>
 #include <Box2D.h>
 //#include "LvlLoad/LvlLoader.h"
 #include "Types/ColorDefinitions.h"
@@ -16,6 +17,18 @@ class Application
 
 private:
     
+    
+    SDL_Surface * image;
+
+    bool gameHasEnded;
+
+    // Key's that are held down
+    bool keysHeld[323];
+
+    // Hold the color state
+    enum Colors { Red, Blue };
+    Colors currentColor;
+
     // Width and height of the drawn screen
     int width;
     int height;
@@ -51,20 +64,20 @@ private:
     void initOpenGL();
     void initBox2D();
     void initBodies();
-
-    bool keysHeld[323];
+    
+    void OnInit();
+    void OnEvent(SDL_Event* Event);
+    void OnLoop();
+    void OnRender();
 
 public:
     Application(int w, int h);
     ~Application();
 
     int run();
-    void OnInit();
-    void OnEvent(SDL_Event* Event);
-    void OnLoop();
-    void OnRender();
 
     void doKeyEvent();
+    void toggleColor();
 };
  
 #endif

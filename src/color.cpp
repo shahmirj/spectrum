@@ -8,6 +8,7 @@ int main(int argc, char *argv[])
 {
     try
     {
+        glutInit(&argc, argv);
         Application application(640, 480);
         return application.run();
     }

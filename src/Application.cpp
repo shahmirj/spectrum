@@ -6,7 +6,13 @@ const int32 Application::velocityIterations = 6;
 const int32 Application::positionIterations = 2;
 
 Application::Application(int width, int height)
-    : running(true), screen(NULL), width(width), height(height)
+    : 
+        running(true), 
+        screen(NULL), 
+        width(width), 
+        height(height), 
+        currentColor(Red),
+        gameHasEnded(false)
 {
     memset(keysHeld, false, 323);
     this->initScreen();
@@ -35,13 +41,19 @@ void Application::initScreen()
 
     screen = SDL_SetVideoMode(
 		    this->width,
-		    this->height, 
+		    this->height,
 		    info->vfmt->BitsPerPixel, 
-                    SDL_OPENGL
-                    // SDL_OPENGL | SDL_HWSURFACE | SDL_GL_DOUBLEBUFFER
+                    //SDL_OPENGL
+                     SDL_OPENGL | SDL_SWSURFACE | SDL_DOUBLEBUF
 	    );
     if(screen == NULL)
         throw Exception("screen was null");
+
+    SDL_Surface * temp = SDL_LoadBMP("./res/test.bmp");
+    if (temp == NULL)
+        throw Exception("temp could not load");
+    image  = SDL_DisplayFormat(temp);
+    SDL_FreeSurface(temp);
 }
 
 /**
@@ -76,21 +88,54 @@ void Application::initBodies()
     Body * body;
 
     character = new Body(world, 50, 10, 10, 10, 0.3, true);
+    character->setColor(255, 0, 0);
     bodies.push_back(character);
 
+    // 1 Red
     body = new Body(world, 50, 30, 100, 10, 0.5, false);
     body->setColor(255, 0, 0);
     bodies.push_back(body);
     redBodies.push_back(body);
-
+    
+    // 2 Blue
     body = new Body(world, 150, 200, 500, 10, 0.5, false);
     body->setColor(0, 0, 255);
     body->hide();
     bodies.push_back(body);
     blueBodies.push_back(body);
-    
-    goal = new Body(world, 50, 175, 30, 30, 0.5, false);
+
+    // 3 Blue
+    body = new Body(world, 200, 110, 1000, 10, 0.5, false);
     body->setColor(0, 0, 255);
+    body->hide();
+    body->setAngle(2.0);
+    bodies.push_back(body);
+    blueBodies.push_back(body);
+    
+    // 4 Red
+    body = new Body(world, 180, 100, 1000, 10, 0.5, false);
+    body->setColor(255, 0, 0);
+    body->setAngle(2.5);
+    bodies.push_back(body);
+    redBodies.push_back(body);
+ 
+    // 5 Red   
+    body = new Body(world, 400, 310, 200, 10, 0.5, false);
+    body->setColor(255, 0, 0);
+    body->setAngle(2.0);
+    bodies.push_back(body);
+    redBodies.push_back(body);
+    
+    // 6 Red
+    body = new Body(world, 520, 400, 120, 10, 0.5, false);
+    body->setColor(0, 0, 255);
+    body->setAngle(2.0);
+    bodies.push_back(body);
+    blueBodies.push_back(body);
+    
+    goal = new Body(world, 610, 455, 30, 30, 0.5, false);
+    //goal = new Body(world, 100, 100, 30, 30, 0.5, false);
+    goal->setAngleVelocity(1.5);
     bodies.push_back(goal);
 }
 
@@ -113,7 +158,7 @@ int Application::run()
         OnRender();
         doKeyEvent();
 
-	//SDL_Delay(15);
+	SDL_Delay(15);
     }
 
     return 0;
@@ -131,6 +176,33 @@ void Application::OnEvent(SDL_Event * event)
             break;                               
         case SDL_KEYUP:
             keysHeld[event->key.keysym.sym] = false;
+
+            // Change color
+            if (event->key.keysym.sym == SDLK_SPACE)
+                toggleColor();
+
+            // Reset our system
+            if (event->key.keysym.sym == SDLK_r)
+            {
+                character->moveTo(50, 15);
+                character->setColor(255, 0, 0);
+                goal->setColor(255, 255, 255);
+                for (size_t x = 0; x < redBodies.size(); x++)
+                {
+                    redBodies[x]->show();
+                    redBodies[x]->setColor(255,0,0);
+                }
+                for (size_t x = 0; x < blueBodies.size(); x++)
+                {
+                    blueBodies[x]->hide();
+                    blueBodies[x]->setColor(0,0,255);
+                }
+
+                currentColor = Red;
+                gameHasEnded = false;
+            }
+
+            break;
         case SDL_KEYDOWN:
             keysHeld[event->key.keysym.sym] = true;
             break;                               
@@ -147,6 +219,26 @@ void Application::OnEvent(SDL_Event * event)
 void Application::OnLoop()
 { 
     world->Step(timeStep, velocityIterations, positionIterations);
+
+    b2Vec2 cp = character->getPosition();
+    b2Vec2 gp = goal->getPosition();
+
+    cp.x = cp.x - character->w/2;
+    cp.y = cp.y - character->h/2;
+    gp.x = gp.x - goal->w/2;
+    gp.y = gp.y - goal->h/2;
+    std::cout << cp.x << "," << cp.y << std::endl;
+
+    if(
+        cp.y + character->h > gp.y - 2 && 
+        cp.y < gp.y + 2 + goal->h && 
+        cp.x + character->w > gp.x - 2 &&
+        cp.x < gp.x + 2 + goal->w
+    )
+    //if (cp.x > 630 && position.y > 465)
+    {
+        gameHasEnded = true;
+    }
 }
 
 /**
@@ -157,6 +249,40 @@ void Application::OnRender()
     glClear(GL_COLOR_BUFFER_BIT);
     glLoadIdentity();
 
+    glColor4ub(255,255,255,255);
+    glPushMatrix();
+
+    glRasterPos2i(8,457);
+    if (currentColor == Red)
+        glutBitmapString(
+                GLUT_BITMAP_9_BY_15, 
+                (const unsigned char *)"Feeling blue? Try <space>."
+            );
+    else
+        glutBitmapString(
+                GLUT_BITMAP_9_BY_15, 
+                (const unsigned char *)"Feeling red? Try <space>."
+            );
+
+    glRasterPos2i(8,471);
+    glutBitmapString(
+            GLUT_BITMAP_9_BY_15, 
+            (const unsigned char *)"Got lost? Press <R>."
+        );
+    glPopMatrix();
+
+    // TODO ALLOW RESET
+    if (gameHasEnded)
+    {
+        for (size_t x = 0; x < bodies.size(); x++)
+        {
+            Color c = bodies[x]->getColor();
+            if (c.red > 10) bodies[x]->setColor(c.red-10, c.green, c.blue);
+            if (c.green > 10) bodies[x]->setColor(c.red, c.green-10, c.blue);
+            if (c.blue > 10) bodies[x]->setColor(c.red, c.green, c.blue-10);
+        }
+    }
+    
     for (size_t x = 0; x < bodies.size(); x++)
         bodies[x]->draw();
 
@@ -174,20 +300,6 @@ void Application::doKeyEvent()
     {
         running = false;
     }    
-    if (keyState[SDLK_1])
-    {
-        for (size_t x = 0; x < redBodies.size(); ++x)
-            redBodies[x]->hide();
-        for (size_t x = 0; x < blueBodies.size(); ++x)
-            blueBodies[x]->show();
-    }                                                   
-    if (keyState[SDLK_2])
-    {
-        for (size_t x = 0; x < redBodies.size(); ++x)
-            redBodies[x]->show();
-        for (size_t x = 0; x < blueBodies.size(); ++x)
-            blueBodies[x]->hide();
-    }
     if (keyState[SDLK_LEFT])
     {
         b2Vec2 vel = character->getVelocity();
@@ -207,6 +319,35 @@ void Application::doKeyEvent()
         if (vel.x > 0) vel.x -= 0.1;
         else vel.x += 0.1;
         character->setVelocity( vel );
+    }
+}
+
+/**
+ * Change the color
+ */
+void Application::toggleColor()
+{
+    if (currentColor == Red)
+    {
+        character->setColor(0, 0, 255);
+
+        for (size_t x = 0; x < redBodies.size(); ++x)
+            redBodies[x]->hide();
+        for (size_t x = 0; x < blueBodies.size(); ++x)
+            blueBodies[x]->show();
+
+        currentColor = Blue;
+    }
+    else
+    {
+        character->setColor(255, 0, 0);
+
+        for (size_t x = 0; x < redBodies.size(); ++x)
+            redBodies[x]->show();
+        for (size_t x = 0; x < blueBodies.size(); ++x)
+            blueBodies[x]->hide();
+        
+        currentColor = Red;
     }
 }
 
