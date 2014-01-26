@@ -8,6 +8,7 @@ const int32 Application::positionIterations = 2;
 Application::Application(int width, int height)
     : running(true), screen(NULL), width(width), height(height)
 {
+    memset(keysHeld, false, 323);
     this->initScreen();
     this->initOpenGL();
     this->initBox2D();
@@ -37,6 +38,7 @@ void Application::initScreen()
 		    this->height, 
 		    info->vfmt->BitsPerPixel, 
                     SDL_OPENGL
+                    // SDL_OPENGL | SDL_HWSURFACE | SDL_GL_DOUBLEBUFFER
 	    );
     if(screen == NULL)
         throw Exception("screen was null");
@@ -73,17 +75,23 @@ void Application::initBodies()
 {
     Body * body;
 
-    character = new Body(world, 50, 10, 10, 10, 0.1, true);
+    character = new Body(world, 50, 10, 10, 10, 0.3, true);
     bodies.push_back(character);
 
-    body = new Body(world, 50, 30, 100, 20, 1.0, false);
+    body = new Body(world, 50, 30, 100, 10, 0.5, false);
     body->setColor(255, 0, 0);
     bodies.push_back(body);
+    redBodies.push_back(body);
 
-    body = new Body(world, 150, 200, 100, 20, 1.0, false);
-    body->setColor(255, 0, 0);
+    body = new Body(world, 150, 200, 500, 10, 0.5, false);
+    body->setColor(0, 0, 255);
+    body->hide();
     bodies.push_back(body);
-
+    blueBodies.push_back(body);
+    
+    goal = new Body(world, 50, 175, 30, 30, 0.5, false);
+    body->setColor(0, 0, 255);
+    bodies.push_back(goal);
 }
 
 /**
@@ -91,6 +99,7 @@ void Application::initBodies()
  */
 int Application::run()
 {
+    SDL_Delay(100);
     SDL_Event Event;
 
     while(running) 
@@ -102,8 +111,9 @@ int Application::run()
 
         OnLoop();
         OnRender();
+        doKeyEvent();
 
-	SDL_Delay(15);
+	//SDL_Delay(15);
     }
 
     return 0;
@@ -114,15 +124,17 @@ int Application::run()
  */
 void Application::OnEvent(SDL_Event * event) 
 {
-	switch (event->type)                         
+    switch (event->type)                         
     {                                            
         case SDL_QUIT:                           
             running = false;                     
             break;                               
-        case SDL_KEYUP:                          
-            OnKeyEvent(&event->key);             
+        case SDL_KEYUP:
+            keysHeld[event->key.keysym.sym] = false;
+        case SDL_KEYDOWN:
+            keysHeld[event->key.keysym.sym] = true;
             break;                               
-        default:                                 
+        default:
             break;                               
     }  
 }
@@ -154,33 +166,47 @@ void Application::OnRender()
 /**
  * Keyboard events
  */
-void Application::OnKeyEvent(SDL_KeyboardEvent * const key) 
-{                            
-    
-    static int x = 0;
-        
-    if (key->type == SDL_KEYUP)                             
-    {       
-        /*        
-        if (key->keysym.sym == SDLK_1)                      
-        {                                                   
-            surfaces[0].hide();                               
-            surfaces[1].show();                               
-        }                                                   
-        else if(key->keysym.sym == SDLK_2)                  
-        {
-            surfaces[0].show();
-            surfaces[1].hide();
-        }
-        */
-        //surfaces[0].move(x++);
-        //
+void Application::doKeyEvent() 
+{
+    Uint8 *keyState = SDL_GetKeyState(NULL);
+
+    if (keyState[SDLK_ESCAPE])
+    {
+        running = false;
+    }    
+    if (keyState[SDLK_1])
+    {
+        for (size_t x = 0; x < redBodies.size(); ++x)
+            redBodies[x]->hide();
+        for (size_t x = 0; x < blueBodies.size(); ++x)
+            blueBodies[x]->show();
+    }                                                   
+    if (keyState[SDLK_2])
+    {
+        for (size_t x = 0; x < redBodies.size(); ++x)
+            redBodies[x]->show();
+        for (size_t x = 0; x < blueBodies.size(); ++x)
+            blueBodies[x]->hide();
+    }
+    if (keyState[SDLK_LEFT])
+    {
         b2Vec2 vel = character->getVelocity();
-        vel.x += 0.5;
+        vel.x -= 0.1;
         character->setVelocity( vel );
     }
-    else if (key->type == SDL_KEYDOWN)
+    else if (keyState[SDLK_RIGHT])
     {
+        b2Vec2 vel = character->getVelocity();
+        vel.x += 0.1;
+        character->setVelocity( vel );
+    }
+    else
+    {
+        b2Vec2 vel = character->getVelocity();
+
+        if (vel.x > 0) vel.x -= 0.1;
+        else vel.x += 0.1;
+        character->setVelocity( vel );
     }
 }
 

@@ -39,14 +39,20 @@ private:
     // The character body
     Body * character;
 
+    Body * goal;
+
     // All bodies, so the can be used to draw consecutively
     std::vector<Body *> bodies;
+    std::vector<Body *> redBodies;
+    std::vector<Body *> blueBodies;
 
     // Initialize function
     void initScreen();
     void initOpenGL();
     void initBox2D();
     void initBodies();
+
+    bool keysHeld[323];
 
 public:
     Application(int w, int h);
@@ -57,7 +63,8 @@ public:
     void OnEvent(SDL_Event* Event);
     void OnLoop();
     void OnRender();
-    void OnKeyEvent(SDL_KeyboardEvent * const key);
+
+    void doKeyEvent();
 };
  
 #endif

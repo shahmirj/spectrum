@@ -23,7 +23,11 @@ private:
 
     Color color;
 
+    // Does the body move to other collisions?
     bool dynamic;
+
+    // Is the body hidden
+    bool hidden;
 
     int x;
     int y;
@@ -49,6 +53,9 @@ public:
 
     void setVelocity(const b2Vec2 vector);
     b2Vec2 getVelocity() const;
+
+    void hide();
+    void show();
 
     void setColor(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha = 255);
 

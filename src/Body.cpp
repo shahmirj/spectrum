@@ -20,7 +20,7 @@ Body::Body(
 	float friction,
 	bool dynamic
     ) 
-    : body(NULL), x(x), y(y), w(w), h(h), dynamic(dynamic)
+    : body(NULL), x(x), y(y), w(w), h(h), dynamic(dynamic), hidden(false)
 {
     // Make sure world is not dead
     if (world == NULL)
@@ -58,7 +58,12 @@ void Body::draw()
 	shape.GetVertex(3)
     };
 
-    glColor4ub(color.red,color.green,color.blue,color.alpha);
+    // If Hidden alpha the object
+    if (hidden)
+	glColor4ub(color.red,color.green,color.blue,50);
+    else
+	glColor4ub(color.red,color.green,color.blue,color.alpha);
+
     glPushMatrix();
     glTranslatef(center.x*M2P,center.y*M2P,0);
     glRotatef(angle*180.0/3.14,0,0,1);
@@ -81,6 +86,18 @@ void Body::setVelocity(const b2Vec2 vector)
 b2Vec2 Body::getVelocity() const
 {
     return this->body->GetLinearVelocity();
+}
+
+void Body::hide()
+{
+    this->body->SetActive(false);
+    hidden = true;
+}
+
+void Body::show()
+{
+    this->body->SetActive(true);
+    hidden = false;
 }
 
 void Body::setColor(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha)
