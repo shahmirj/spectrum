@@ -150,6 +150,10 @@ void Application::initBodies()
     body = new Body(world, 0, 481, 1300, 1, 0, false);
     body->setColor(255, 255, 255);
     bodies.push_back(body);
+    body = new Body(world, -1, 0, 1000, 1, 0, false);
+    body->setColor(255, 255, 255);
+    body->setAngle(1.5707);
+    bodies.push_back(body);
     
     goal = new Body(world, 590, 435, 30, 30, 0.5, false);
     //goal = new Body(world, 100, 100, 30, 30, 0.5, false);
