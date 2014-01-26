@@ -2,33 +2,51 @@
 #define _APPLICATION_H_
  
 #include <iostream>
+#include <vector>
 #include <SDL.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
 #include <Box2D.h>
-#include "Surface/Rectangle.h"
-#include "LvlLoad/LvlLoader.h"
+//#include "LvlLoad/LvlLoader.h"
 #include "Types/ColorDefinitions.h"
+#include "Body.h"
  
 class Application
 {
 
 private:
+    
+    // Width and height of the drawn screen
+    int width;
+    int height;
+
+    // Prepare for simulation. Typically we use a time step of 1/60 of a
+    // second (60Hz) and 10 iterations. This provides a high quality simulation
+    // in most game scenarios.
+    static const float32 timeStep;
+    static const int32 velocityIterations;
+    static const int32 positionIterations;
+
     bool running;
 
     SDL_Surface * screen;
 
-    vector<SurfaceRectangle> surfaces;
-	ColorDefinitions colorDefinitions;
+    Body * character;
+    std::vector<Body *> bodies;
 
-    Surface * surface1;
-    Surface * surface2;
-    b2World*  world;
+    b2World * world;
+
+    void initScreen();
+    void initOpenGL();
+    void initBox2D();
+    void initBodies();
 
 public:
-    Application();
+    Application(int w, int h);
     ~Application();
 
     int run();
-    bool OnInit();
+    void OnInit();
     void OnEvent(SDL_Event* Event);
     void OnLoop();
     void OnRender();

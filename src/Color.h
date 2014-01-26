@@ -4,12 +4,12 @@
 class Color
 {
 public:
-    Uint8 red;
-    Uint8 blue;
-    Uint8 green;
-    Uint8 alpha;
+    int red;
+    int blue;
+    int green;
+    int alpha;
 
-    Color() : red(0), blue(0), green(0), alpha(0) {}
+    Color() : red(255), blue(255), green(255), alpha(255) {}
 };
 
 #endif
