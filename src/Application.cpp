@@ -73,14 +73,14 @@ void Application::initBodies()
 {
     Body * body;
 
-    character = new Body(world, 50, 10, 10, 10, true);
+    character = new Body(world, 50, 10, 10, 10, 0.1, true);
     bodies.push_back(character);
 
-    body = new Body(world, 50, 30, 100, 20, false);
+    body = new Body(world, 50, 30, 100, 20, 1.0, false);
     body->setColor(255, 0, 0);
     bodies.push_back(body);
 
-    body = new Body(world, 150, 200, 100, 20, false);
+    body = new Body(world, 150, 200, 100, 20, 1.0, false);
     body->setColor(255, 0, 0);
     bodies.push_back(body);
 

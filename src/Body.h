@@ -17,6 +17,7 @@ private:
 
     b2Body * body;
     b2PolygonShape shape;
+ //   b2FixtureDef definition;
 
     //void doActualDraw();
 
@@ -38,10 +39,13 @@ public:
 	    int x, 
 	    int y, 
 	    int w, 
-	    int h, 
+	    int h,
+	    float friction = 0.0,
 	    bool dynamic = true
 	);
     virtual ~Body();
+
+    void setFriction(const float friction);
 
     void setVelocity(const b2Vec2 vector);
     b2Vec2 getVelocity() const;

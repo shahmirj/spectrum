@@ -17,6 +17,7 @@ Body::Body(
 	int y,
 	int w,
 	int h,
+	float friction,
 	bool dynamic
     ) 
     : body(NULL), x(x), y(y), w(w), h(h), dynamic(dynamic)
@@ -35,13 +36,14 @@ Body::Body(
     // Set the width and height
     //
     // Really not sure what this does?
-    shape.SetAsBox(P2M*w/2,P2M*h/2);
+    shape.SetAsBox(P2M*w/2, P2M*h/2);
    
     // The shape fixture properties
-    b2FixtureDef fixturedef;
-    fixturedef.shape=&shape;
-    fixturedef.density=1.0;
-    body->CreateFixture(&fixturedef);
+    b2FixtureDef definition;
+    definition.shape = &shape;
+    definition.density = 1.0;
+    definition.friction = friction;
+    body->CreateFixture(&definition);
 }
 
 void Body::draw()
