@@ -48,12 +48,6 @@ void Application::initScreen()
 	    );
     if(screen == NULL)
         throw Exception("screen was null");
-
-    SDL_Surface * temp = SDL_LoadBMP("./res/test.bmp");
-    if (temp == NULL)
-        throw Exception("temp could not load");
-    image  = SDL_DisplayFormat(temp);
-    SDL_FreeSurface(temp);
 }
 
 /**
@@ -251,7 +245,7 @@ void Application::OnLoop()
     cp.y = cp.y - character->h/2;
     gp.x = gp.x - goal->w/2;
     gp.y = gp.y - goal->h/2;
-    std::cout << cp.x << "," << cp.y << std::endl;
+    //std::cout << cp.x << "," << cp.y << std::endl;
 
     if(
         cp.y + character->h > gp.y - 2 && 
