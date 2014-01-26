@@ -20,6 +20,11 @@ Download:
 Inside the root folder run:
 
     make clean all && ./color
+    
+*Note in some cases if you installed Box2d manualy you need to include the `/usr/local/lib` path before running the game, try the following:*
+
+    export LD_LIBRARY_PATH=/usr/local/lib
+    ./color
 
 ### Installing Windows
 Known to work on windows in its early stages. You will need OpenGL and GLUT, Box2D 2.13 and SDL 1.2 with a bit of luck.
