@@ -15,7 +15,7 @@ Download:
 
  - OpenGL and GLUT
  - SDL v1.2
- - Box2D v2.2.1 (https://code.google.com/p/box2d/downloads/detail?name=Box2D_v2.1.2.zip&can=2&q=)
+ - Box2D v2.2.1 (https://code.google.com/p/box2d/downloads/detail?name=Box2D_v2.2.1.zip&can=2&q=)
 
 Inside the root folder run:
 
@@ -27,7 +27,7 @@ Inside the root folder run:
     ./color
 
 ### Installing Windows
-Known to work on windows in its early stages. You will need OpenGL and GLUT, Box2D 2.13 and SDL 1.2 with a bit of luck.
+Known to work on windows in its early stages. You will need OpenGL and GLUT, Box2D 2.2.1 and SDL 1.2 with a bit of luck.
 
 ### Credits
  - Iulia Comsa - Cheif designer, head honcho and Math nut.
