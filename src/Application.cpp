@@ -71,7 +71,7 @@ void Application::initOpenGL()
 void Application::initBox2D()
 {
     b2Vec2 gravity(0.0f, 3.8f);
-    world = new b2World(gravity, false);
+    world = new b2World(gravity);
 }
 
 /**
