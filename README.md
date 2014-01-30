@@ -10,7 +10,7 @@ How does your state of mind change the way you perceive the world around you? In
 ### Instructions
 Use the Arrow keys to move right and left. Your objective is to get the coloured square to touch the white square.
 
-### Installing Linux
+### Installing on Linux
 Download:
 
  - OpenGL and GLUT
@@ -26,7 +26,7 @@ Inside the root folder run:
     export LD_LIBRARY_PATH=/usr/local/lib
     ./color
 
-### Installing Windows
+### Installing on Windows
 
 Main approximate steps:
 
