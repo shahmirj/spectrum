@@ -27,7 +27,14 @@ Inside the root folder run:
     ./color
 
 ### Installing Windows
-Known to work on windows in its early stages. You will need OpenGL and GLUT, Box2D 2.2.1 and SDL 1.2 with a bit of luck.
+
+Main approximate steps:
+
+Get Box2D v2.2.1 and build it with cmake (run cmake . in Box2D's directory).
+Get SDL v1.2.
+Get (GLUT and) OpenGlut.
+
+Add all sources to a VS C++ project. For the above libraries: Add the headers to C++ additional include directories and the .libs to additional directories for the linker. Use the 32bit version of SDL even if running on an x64 system. Also add the .lib names to linker dependencies.
 
 ### Credits
  - Iulia Comsa - Cheif designer, head honcho and Math nut.
