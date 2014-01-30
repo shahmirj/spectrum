@@ -142,6 +142,19 @@ void Application::initBodies()
     body->setAngle(2.0);
     bodies.push_back(body);
     redBodies.push_back(body);
+ 
+    // Create the walls
+    createWalls();
+
+    goal = new Body(world, 590, 435, 30, 30, 0.5, false);
+    //goal = new Body(world, 100, 100, 30, 30, 0.5, false);
+    goal->setAngleVelocity(1.5);
+    bodies.push_back(goal);
+}
+
+void Application::createWalls()
+{
+    Body * body = NULL;
 
     body = new Body(world, 641, 0, 1000, 1, 0, false);
     body->setColor(255, 255, 255);
@@ -154,11 +167,6 @@ void Application::initBodies()
     body->setColor(255, 255, 255);
     body->setAngle(1.5707);
     bodies.push_back(body);
-    
-    goal = new Body(world, 590, 435, 30, 30, 0.5, false);
-    //goal = new Body(world, 100, 100, 30, 30, 0.5, false);
-    goal->setAngleVelocity(1.5);
-    bodies.push_back(goal);
 }
 
 /**
@@ -205,29 +213,7 @@ void Application::OnEvent(SDL_Event * event)
 
             // Reset our system
             if (event->key.keysym.sym == SDLK_r)
-            {
-                character->moveTo(50, 15);
-                character->setColor(255, 0, 0);
-                goal->setColor(255, 255, 255);
-                for (size_t x = 0; x < redBodies.size(); x++)
-                {
-                    redBodies[x]->show();
-                    redBodies[x]->setColor(255,0,0);
-                }
-                for (size_t x = 0; x < blueBodies.size(); x++)
-                {
-                    blueBodies[x]->hide();
-                    blueBodies[x]->setColor(0,0,255);
-                }
-            
-                // Stop the character accelerating from reload
-                b2Vec2 vel;
-                vel.x = 0;
-                character->setVelocity( vel );
-
-                currentColor = Red;
-                gameHasEnded = false;
-            }
+                resetGameLevel();
 
             break;
         case SDL_KEYDOWN:
@@ -236,6 +222,32 @@ void Application::OnEvent(SDL_Event * event)
         default:
             break;                               
     }  
+}
+
+/**
+ * Reset the game level
+ */
+void Application::resetGameLevel()
+{
+    // Stop the character accelerating from reload
+    character->setVelocity(b2Vec2(0.0f, 0.0f));
+    character->moveTo(50, 15);
+    character->setColor(255, 0, 0);
+    goal->setColor(255, 255, 255);
+
+    for (size_t x = 0; x < redBodies.size(); x++)
+    {
+        redBodies[x]->show();
+        redBodies[x]->setColor(255,0,0);
+    }
+    for (size_t x = 0; x < blueBodies.size(); x++)
+    {
+        blueBodies[x]->hide();
+        blueBodies[x]->setColor(0,0,255);
+    }
+
+    currentColor = Red;
+    gameHasEnded = false;
 }
 
 /**
@@ -262,7 +274,6 @@ void Application::OnLoop()
         cp.x + character->w > gp.x - 2 &&
         cp.x < gp.x + 2 + goal->w
     )
-    //if (cp.x > 630 && position.y > 465)
     {
         gameHasEnded = true;
     }
@@ -291,6 +302,17 @@ void Application::OnRender()
     for (size_t x = 0; x < bodies.size(); x++)
         bodies[x]->draw();
 
+    printText();
+
+    SDL_GL_SwapBuffers( );
+}
+
+/**
+ * All the text to print
+ */
+void Application::printText()
+{
+
     glColor4ub(255,255,255,255);
     glPushMatrix();
 
@@ -312,8 +334,6 @@ void Application::OnRender()
             (const unsigned char *)"Got lost? Press <R>."
         );
     glPopMatrix();
-
-    SDL_GL_SwapBuffers( );
 }
 
 /**

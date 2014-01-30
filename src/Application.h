@@ -70,6 +70,10 @@ private:
     void OnLoop();
     void OnRender();
 
+    void createWalls();
+    void printText();
+    void resetGameLevel();
+
 public:
     Application(int w, int h);
     ~Application();
