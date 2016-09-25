@@ -4,8 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <SDL.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
 #include <GL/freeglut.h>
 #include <Box2D.h>
 //#include "LvlLoad/LvlLoader.h"
